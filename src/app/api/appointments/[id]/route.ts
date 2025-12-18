@@ -3,14 +3,15 @@ import { mockAppointments } from '@/lib/mockData';
 
 export async function PATCH(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     const body = await request.json();
     const { status } = body;
 
     // Find and update appointment
-    const appointmentIndex = mockAppointments.findIndex(apt => apt.id === params.id);
+    const appointmentIndex = mockAppointments.findIndex(apt => apt.id === id);
 
     if (appointmentIndex === -1) {
       return NextResponse.json(
