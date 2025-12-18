@@ -15,7 +15,7 @@ export default function Hero() {
   };
 
   return (
-    <div className="relative min-h-[90vh] flex items-center justify-center overflow-hidden">
+    <div className="relative min-h-[90vh] flex items-center justify-center overflow-hidden pt-16 md:pt-0">
       {/* Background con parallax effect */}
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-background/50 to-background">
         <motion.div

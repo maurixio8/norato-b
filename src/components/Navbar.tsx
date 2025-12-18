@@ -5,15 +5,21 @@ import { Menu, X, Moon, Sun } from 'lucide-react';
 import { useState, useEffect } from 'react';
 
 export default function Navbar() {
-  const [isDark, setIsDark] = useState(false);
+  const [isDark, setIsDark] = useState(true);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     const saved = localStorage.getItem('theme');
-    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    if (saved === 'dark' || (!saved && prefersDark)) {
+    // Default to dark mode if no preference is saved
+    if (saved === 'light') {
+      setIsDark(false);
+      document.documentElement.classList.remove('dark');
+    } else {
       setIsDark(true);
       document.documentElement.classList.add('dark');
+      if (!saved) {
+        localStorage.setItem('theme', 'dark');
+      }
     }
   }, []);
 

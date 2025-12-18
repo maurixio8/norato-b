@@ -91,7 +91,7 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
       `${customerInfo.email ? `• Email: ${customerInfo.email}` : ''}\n\n` +
       `Por favor, confirmen la disponibilidad. ¡Gracias!`;
 
-    const phoneNumber = '573115432100'; // Número para demo - Cambiar por el real
+    const phoneNumber = '573182745713'; // Número de WhatsApp de Norato B
     const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
     window.open(url, '_blank');
   };
