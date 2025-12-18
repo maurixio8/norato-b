@@ -5,17 +5,61 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { X, Calendar, Clock, User, Phone, Mail, Check, MessageCircle } from 'lucide-react';
 
 const services = [
-  'Corte Mujer & Styling - $95K',
-  'Corte Caballero - $55K',
-  'Peinado Evento - $120K+',
-  'Tinte Completo - $160K',
-  'Retoque de Raíz - $90K',
-  'Balayage / Ombré - $320K+',
-  'Babylights - $280K+',
-  'Keratina Orgánica - $420K',
-  'Hidratación Profunda - $70K',
-  'Botox Capilar - $180K',
-  'Tratamiento Scalp Detox - $80K',
+  {
+    name: 'Corte Mujer & Styling - $95K',
+    image: 'https://images.unsplash.com/photo-1562322140-8baeececf3df?w=500&q=80',
+    description: 'Corte personalizado y peinado profesional'
+  },
+  {
+    name: 'Corte Caballero - $55K',
+    image: 'https://images.unsplash.com/photo-1503951914875-452162b0f3f1?w=500&q=80',
+    description: 'Corte moderno y clásico para caballeros'
+  },
+  {
+    name: 'Peinado Evento - $120K+',
+    image: 'https://images.unsplash.com/photo-1487412947147-5cebf100ffc2?w=500&q=80',
+    description: 'Peinados elegantes para ocasiones especiales'
+  },
+  {
+    name: 'Tinte Completo - $160K',
+    image: 'https://images.unsplash.com/photo-1522337660859-02fbefca4702?w=500&q=80',
+    description: 'Coloración completa con productos premium'
+  },
+  {
+    name: 'Retoque de Raíz - $90K',
+    image: 'https://images.unsplash.com/photo-1560869713-7d0a29430803?w=500&q=80',
+    description: 'Retoque de raíces para mantener tu color'
+  },
+  {
+    name: 'Balayage / Ombré - $320K+',
+    image: 'https://images.unsplash.com/photo-1580618672591-eb180b1a973f?w=500&q=80',
+    description: 'Técnicas de iluminación natural'
+  },
+  {
+    name: 'Babylights - $280K+',
+    image: 'https://images.unsplash.com/photo-1512496015851-a90fb38ba796?w=500&q=80',
+    description: 'Mechas sutiles y naturales'
+  },
+  {
+    name: 'Keratina Orgánica - $420K',
+    image: 'https://images.unsplash.com/photo-1519699047748-de8e457a634e?w=500&q=80',
+    description: 'Alisado y nutrición profunda'
+  },
+  {
+    name: 'Hidratación Profunda - $70K',
+    image: 'https://images.unsplash.com/photo-1527799820374-dcf8d9d4a388?w=500&q=80',
+    description: 'Tratamiento intensivo de hidratación'
+  },
+  {
+    name: 'Botox Capilar - $180K',
+    image: 'https://images.unsplash.com/photo-1526047932273-341f2a7631f9?w=500&q=80',
+    description: 'Reparación y rejuvenecimiento capilar'
+  },
+  {
+    name: 'Tratamiento Scalp Detox - $80K',
+    image: 'https://images.unsplash.com/photo-1516975080664-ed2fc6a32937?w=500&q=80',
+    description: 'Limpieza profunda del cuero cabelludo'
+  },
 ];
 
 const timeSlots = [
@@ -164,21 +208,33 @@ export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
                           <Calendar className="w-5 h-5 text-primary mr-2" />
                           <h3 className="text-lg font-medium">Selecciona un servicio</h3>
                         </div>
-                        <div className="space-y-2 max-h-64 overflow-y-auto">
+                        <div className="space-y-3 max-h-96 overflow-y-auto pr-2">
                           {services.map((service) => (
                             <label
-                              key={service}
-                              className="flex items-center p-3 border border-border rounded-lg cursor-pointer hover:bg-surface/50 transition-colors"
+                              key={service.name}
+                              className={`flex items-start gap-3 p-3 border-2 rounded-lg cursor-pointer transition-all ${
+                                selectedService === service.name
+                                  ? 'border-primary bg-primary/5'
+                                  : 'border-border hover:border-primary/50 hover:bg-surface/50'
+                              }`}
                             >
                               <input
                                 type="radio"
                                 name="service"
-                                value={service}
-                                checked={selectedService === service}
+                                value={service.name}
+                                checked={selectedService === service.name}
                                 onChange={(e) => setSelectedService(e.target.value)}
-                                className="w-4 h-4 text-primary focus:ring-primary"
+                                className="mt-1 w-4 h-4 text-primary focus:ring-primary"
                               />
-                              <span className="ml-3">{service}</span>
+                              <img
+                                src={service.image}
+                                alt={service.name}
+                                className="w-16 h-16 object-cover rounded-md flex-shrink-0"
+                              />
+                              <div className="flex-1 min-w-0">
+                                <p className="font-medium text-sm">{service.name}</p>
+                                <p className="text-xs text-muted mt-1">{service.description}</p>
+                              </div>
                             </label>
                           ))}
                         </div>

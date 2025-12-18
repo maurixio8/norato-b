@@ -37,7 +37,7 @@ export default function AdminDashboard() {
   const [loading, setLoading] = useState(true);
   const [editingPrices, setEditingPrices] = useState(false);
   const [prices, setPrices] = useState<{ [key: string]: string }>({});
-  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]);
 
   useEffect(() => {
@@ -133,58 +133,73 @@ export default function AdminDashboard() {
 
   return (
     <div className="min-h-screen bg-surface text-foreground">
+      {/* Backdrop for mobile */}
+      {sidebarOpen && (
+        <div
+          className="fixed inset-0 bg-black/50 z-30 md:hidden"
+          onClick={() => setSidebarOpen(false)}
+        />
+      )}
+
       {/* Sidebar */}
       <motion.aside
-        className={`fixed left-0 top-0 h-full bg-background border-r border-border z-40 transition-all duration-300 ${sidebarOpen ? 'w-64' : 'w-16'}`}
+        className={`fixed left-0 top-0 h-full bg-background border-r border-border z-40 transition-all duration-300 ${
+          sidebarOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'
+        } w-64 md:w-64`}
         initial={false}
-        animate={{ width: sidebarOpen ? 256 : 64 }}
       >
         <div className="p-4">
           <div className="flex items-center justify-between mb-8">
-            {sidebarOpen && (
-              <h2 className="text-xl font-serif">
-                NORATO<span className="text-primary">•</span>B
-              </h2>
-            )}
+            <h2 className="text-xl font-serif">
+              NORATO<span className="text-primary">•</span>B
+            </h2>
             <button
               onClick={() => setSidebarOpen(!sidebarOpen)}
-              className="p-2 hover:bg-surface rounded-lg transition-colors"
+              className="p-2 hover:bg-surface rounded-lg transition-colors md:hidden"
             >
-              <Menu size={20} />
+              <X size={20} />
             </button>
           </div>
 
-          {sidebarOpen && (
-            <nav className="space-y-2">
-              <a
-                href="/admin"
-                className="flex items-center p-3 bg-primary text-white rounded-lg"
-              >
-                <Calendar size={20} className="mr-3" />
-                Citas
-              </a>
-              <button
-                onClick={() => window.location.href = '/'}
-                className="w-full flex items-center p-3 hover:bg-surface rounded-lg transition-colors text-left"
-              >
-                <LogOut size={20} className="mr-3" />
-                Salir
-              </button>
-            </nav>
-          )}
+          <nav className="space-y-2">
+            <a
+              href="/admin"
+              className="flex items-center p-3 bg-primary text-white rounded-lg"
+            >
+              <Calendar size={20} className="mr-3" />
+              Citas
+            </a>
+            <button
+              onClick={() => window.location.href = '/'}
+              className="w-full flex items-center p-3 hover:bg-surface rounded-lg transition-colors text-left"
+            >
+              <LogOut size={20} className="mr-3" />
+              Salir
+            </button>
+          </nav>
         </div>
       </motion.aside>
 
       {/* Main Content */}
-      <div className={`transition-all duration-300 ${sidebarOpen ? 'ml-64' : 'ml-16'}`}>
+      <div className="md:ml-64">
         <div className="p-4 sm:p-6 lg:p-8">
+          {/* Mobile Header */}
+          <div className="md:hidden mb-4">
+            <button
+              onClick={() => setSidebarOpen(true)}
+              className="p-2 hover:bg-background rounded-lg transition-colors"
+            >
+              <Menu size={24} />
+            </button>
+          </div>
+
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             className="mb-8"
           >
-            <h1 className="text-3xl font-serif mb-2">Dashboard Administrativo</h1>
-            <p className="text-muted">Gestiona tus citas y servicios</p>
+            <h1 className="text-2xl md:text-3xl font-serif mb-2">Dashboard Administrativo</h1>
+            <p className="text-muted text-sm md:text-base">Gestiona tus citas y servicios</p>
           </motion.div>
 
           {/* Price Management */}
@@ -192,37 +207,37 @@ export default function AdminDashboard() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="bg-background rounded-lg border border-border p-6 mb-8"
+            className="bg-background rounded-lg border border-border p-4 md:p-6 mb-8"
           >
-            <div className="flex justify-between items-center mb-4">
-              <h2 className="text-xl font-medium">Gestión de Precios</h2>
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-4">
+              <h2 className="text-lg md:text-xl font-medium">Gestión de Precios</h2>
               <button
                 onClick={() => editingPrices ? setEditingPrices(false) : setEditingPrices(true)}
-                className={`flex items-center px-4 py-2 rounded-lg transition-colors ${
+                className={`flex items-center px-3 md:px-4 py-2 rounded-lg transition-colors text-sm md:text-base ${
                   editingPrices
                     ? 'bg-red-500 text-white hover:bg-red-600'
                     : 'bg-primary text-white hover:bg-primary/90'
                 }`}
               >
-                {editingPrices ? <X size={18} className="mr-2" /> : <Edit2 size={18} className="mr-2" />}
-                {editingPrices ? 'Cancelar' : 'Editar Precios'}
+                {editingPrices ? <X size={16} className="mr-2" /> : <Edit2 size={16} className="mr-2" />}
+                {editingPrices ? 'Cancelar' : 'Editar'}
               </button>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
               {services.map((service) => (
-                <div key={service} className="flex items-center justify-between p-3 bg-surface/50 rounded-lg">
-                  <span className="text-sm">{service}</span>
+                <div key={service} className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-3 bg-surface/50 rounded-lg gap-2">
+                  <span className="text-xs md:text-sm font-medium">{service}</span>
                   {editingPrices ? (
                     <input
                       type="text"
                       value={prices[service] || ''}
                       onChange={(e) => setPrices({ ...prices, [service]: e.target.value })}
-                      className="w-20 px-2 py-1 text-sm border border-border rounded focus:outline-none focus:ring-2 focus:ring-primary"
+                      className="w-full sm:w-20 px-2 py-1 text-sm border border-border rounded focus:outline-none focus:ring-2 focus:ring-primary bg-background"
                       placeholder="$0K"
                     />
                   ) : (
-                    <span className="text-primary font-medium">{prices[service] || '$0K'}</span>
+                    <span className="text-primary font-medium text-sm">{prices[service] || '$0K'}</span>
                   )}
                 </div>
               ))}
@@ -244,15 +259,15 @@ export default function AdminDashboard() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
-            className="bg-background rounded-lg border border-border p-6"
+            className="bg-background rounded-lg border border-border p-4 md:p-6"
           >
-            <div className="flex justify-between items-center mb-6">
-              <h2 className="text-xl font-medium">Citas del Día</h2>
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-6">
+              <h2 className="text-lg md:text-xl font-medium">Citas del Día</h2>
               <input
                 type="date"
                 value={selectedDate}
                 onChange={(e) => setSelectedDate(e.target.value)}
-                className="px-4 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                className="w-full sm:w-auto px-3 md:px-4 py-2 text-sm md:text-base border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary bg-surface"
               />
             </div>
 
@@ -261,65 +276,66 @@ export default function AdminDashboard() {
             ) : filteredAppointments.length === 0 ? (
               <div className="text-center py-8 text-muted">No hay citas para esta fecha</div>
             ) : (
-              <div className="space-y-4">
+              <div className="space-y-3">
                 {filteredAppointments.map((appointment) => (
                   <motion.div
                     key={appointment.id}
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
-                    className="bg-surface/50 rounded-lg p-4"
+                    className="bg-surface/50 rounded-lg p-3 md:p-4"
                   >
-                    <div className="flex items-start justify-between">
-                      <div className="flex-1">
-                        <div className="flex items-center mb-2">
+                    <div className="flex flex-col gap-3">
+                      <div className="flex items-start justify-between gap-2">
+                        <div className="flex items-start gap-2 flex-1 min-w-0">
                           {getStatusIcon(appointment.status)}
-                          <div className="flex-1">
-                            <p className="font-medium">{appointment.customerName}</p>
-                            <p className="text-sm text-primary font-semibold">{appointment.serviceName || 'Servicio'}</p>
+                          <div className="flex-1 min-w-0">
+                            <p className="font-medium text-sm md:text-base truncate">{appointment.customerName}</p>
+                            <p className="text-xs md:text-sm text-primary font-semibold truncate">{appointment.serviceName || 'Servicio'}</p>
                           </div>
-                          <span className="text-muted">{appointment.time}</span>
                         </div>
-                        <div className="space-y-1 text-sm text-muted">
-                          <div className="flex items-center">
-                            <Phone size={14} className="mr-2" />
-                            {appointment.customerPhone}
-                          </div>
-                          {appointment.customerEmail && (
-                            <div className="flex items-center">
-                              <Mail size={14} className="mr-2" />
-                              {appointment.customerEmail}
-                            </div>
-                          )}
-                        </div>
+                        <span className="text-muted text-xs md:text-sm whitespace-nowrap">{appointment.time}</span>
                       </div>
-                    </div>
 
-                    {/* Status Actions */}
-                    <div className="flex gap-2 mt-3">
-                      {appointment.status === 'PENDING' && (
-                        <>
+                      <div className="space-y-1 text-xs md:text-sm text-muted">
+                        <div className="flex items-center gap-2">
+                          <Phone size={14} className="flex-shrink-0" />
+                          <span className="truncate">{appointment.customerPhone}</span>
+                        </div>
+                        {appointment.customerEmail && (
+                          <div className="flex items-center gap-2">
+                            <Mail size={14} className="flex-shrink-0" />
+                            <span className="truncate">{appointment.customerEmail}</span>
+                          </div>
+                        )}
+                      </div>
+
+                      {/* Status Actions */}
+                      <div className="flex flex-wrap gap-2">
+                        {appointment.status === 'PENDING' && (
+                          <>
+                            <button
+                              onClick={() => updateAppointmentStatus(appointment.id, 'CONFIRMED')}
+                              className="flex-1 sm:flex-none px-3 py-1.5 text-xs md:text-sm bg-green-500 text-white rounded hover:bg-green-600 transition-colors"
+                            >
+                              Confirmar
+                            </button>
+                            <button
+                              onClick={() => updateAppointmentStatus(appointment.id, 'CANCELLED')}
+                              className="flex-1 sm:flex-none px-3 py-1.5 text-xs md:text-sm bg-red-500 text-white rounded hover:bg-red-600 transition-colors"
+                            >
+                              Cancelar
+                            </button>
+                          </>
+                        )}
+                        {appointment.status === 'CONFIRMED' && (
                           <button
-                            onClick={() => updateAppointmentStatus(appointment.id, 'CONFIRMED')}
-                            className="px-3 py-1 text-xs bg-green-500 text-white rounded hover:bg-green-600 transition-colors"
+                            onClick={() => updateAppointmentStatus(appointment.id, 'COMPLETED')}
+                            className="px-3 py-1.5 text-xs md:text-sm bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors"
                           >
-                            Confirmar
+                            Completar
                           </button>
-                          <button
-                            onClick={() => updateAppointmentStatus(appointment.id, 'CANCELLED')}
-                            className="px-3 py-1 text-xs bg-red-500 text-white rounded hover:bg-red-600 transition-colors"
-                          >
-                            Cancelar
-                          </button>
-                        </>
-                      )}
-                      {appointment.status === 'CONFIRMED' && (
-                        <button
-                          onClick={() => updateAppointmentStatus(appointment.id, 'COMPLETED')}
-                          className="px-3 py-1 text-xs bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors"
-                        >
-                          Completar
-                        </button>
-                      )}
+                        )}
+                      </div>
                     </div>
                   </motion.div>
                 ))}

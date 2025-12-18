@@ -6,7 +6,7 @@ import Hero from '@/components/Hero';
 import Services from '@/components/Services';
 import BookingModal from '@/components/BookingModal';
 import { motion } from 'framer-motion';
-import { Calendar, MapPin, Phone, Mail, Instagram, Facebook } from 'lucide-react';
+import { Calendar, MapPin, Phone, Mail, Instagram, Facebook, MessageCircle } from 'lucide-react';
 
 export default function Home() {
   const [isBookingOpen, setIsBookingOpen] = useState(false);
@@ -117,6 +117,21 @@ export default function Home() {
           </p>
         </div>
       </footer>
+
+      {/* Floating WhatsApp Button */}
+      <motion.a
+        href="https://wa.me/573182745713?text=Hola%20Norato%20B%2C%20tengo%20una%20consulta"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="fixed bottom-6 left-6 bg-green-500 text-white p-4 rounded-full shadow-lg z-30 flex items-center justify-center hover:bg-green-600 transition-colors"
+        initial={{ scale: 0 }}
+        animate={{ scale: 1 }}
+        transition={{ delay: 2.2, duration: 0.5 }}
+        whileHover={{ scale: 1.1 }}
+        whileTap={{ scale: 0.95 }}
+      >
+        <MessageCircle size={24} />
+      </motion.a>
 
       {/* Floating Booking Button */}
       <motion.button
