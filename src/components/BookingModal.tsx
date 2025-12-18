@@ -27,7 +27,12 @@ const timeSlots = [
   '8:00 PM', '8:30 PM',
 ];
 
-export default function BookingModal({ isOpen, onClose }) {
+interface BookingModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+}
+
+export default function BookingModal({ isOpen, onClose }: BookingModalProps) {
   const [step, setStep] = useState(1);
   const [selectedService, setSelectedService] = useState('');
   const [selectedDate, setSelectedDate] = useState('');
@@ -39,7 +44,7 @@ export default function BookingModal({ isOpen, onClose }) {
   });
   const [appointmentConfirmed, setAppointmentConfirmed] = useState(false);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (step === 1 && selectedService) {
       setStep(2);
