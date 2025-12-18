@@ -15,6 +15,7 @@ interface Appointment {
   time: string;
   status: 'PENDING' | 'CONFIRMED' | 'CANCELLED' | 'COMPLETED';
   service: string;
+  serviceName?: string;
 }
 
 const services = [
