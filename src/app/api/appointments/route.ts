@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { mockAppointments } from '@/lib/mockData';
+import { mockAppointments, MockAppointment } from '@/lib/mockData';
 
 export async function POST(request: NextRequest) {
   try {
@@ -30,7 +30,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Create appointment
-    const appointment = {
+    const appointment: MockAppointment = {
       id: Date.now().toString(),
       serviceId: 'demo-service',
       serviceName,
